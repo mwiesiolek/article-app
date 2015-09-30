@@ -12,12 +12,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 public class ArticleApplicationTests {
 
     @Test
-    public void testSomething() {
-
-        //given
-
-        //when
-
-        //then
+    public void testAppInitialization() {
+        //just to invoke in order to check if everything is initialized properly
     }
 }

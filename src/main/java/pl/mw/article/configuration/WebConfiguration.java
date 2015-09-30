@@ -1,20 +1,26 @@
 package pl.mw.article.configuration;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
+import pl.mw.article.interceptor.ViewInterceptor;
 
 /**
  * Created by mwiesiolek on 30/09/2015.
  */
 @Configuration
-@ComponentScan(basePackages = {"pl.mw.webshop"})
+@ComponentScan(basePackages = {"pl.mw.article"})
 public class WebConfiguration extends WebMvcConfigurationSupport {
+
+    @Autowired
+    private ViewInterceptor viewInterceptor;
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -28,6 +34,11 @@ public class WebConfiguration extends WebMvcConfigurationSupport {
                 .addResourceLocations("classpath:/static/img/");
     }
 
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(viewInterceptor);
+    }
+
     @Bean(name = "freeMarkerViewResolver")
     public ViewResolver getViewResolver(FreeMarkerConfigurer freeMarkerConfigurer) {
         freeMarkerConfigurer.setDefaultEncoding("UTF-8");
@@ -39,5 +50,10 @@ public class WebConfiguration extends WebMvcConfigurationSupport {
 
         return resolver;
 
+    }
+
+    @Bean
+    public ViewInterceptor getViewInterceptor(){
+        return new ViewInterceptor();
     }
 }

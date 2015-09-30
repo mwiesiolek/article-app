@@ -1,0 +1,1 @@
+app = angular.module('article', ['ui.bootstrap','smart-table']);
