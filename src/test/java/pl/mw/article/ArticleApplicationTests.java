@@ -13,6 +13,6 @@ public class ArticleApplicationTests {
 
     @Test
     public void testAppInitialization() {
-        //just to invoke in order to check if everything is initialized properly
+        //tests whether or not production beans are initialized properly
     }
 }
