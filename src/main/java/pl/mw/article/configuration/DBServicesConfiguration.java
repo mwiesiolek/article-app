@@ -14,22 +14,25 @@ import pl.mw.article.service.ArticleService;
 public class DBServicesConfiguration {
 
     @Bean
-    public ArticleDAO createArticleDAO(){
-        return new ArticleDAO();
+    public ArticleDAO createArticleDAO() {
+        final ArticleDAO articleDAO = new ArticleDAO();
+        return articleDAO;
     }
 
     @Bean
-    public AuthorDAO createAuthorDAO(){
-        return new AuthorDAO();
+    public AuthorDAO createAuthorDAO() {
+        final AuthorDAO authorDAO = new AuthorDAO();
+        return authorDAO;
     }
 
     @Bean
-    public KeywordDAO createKeywordDAO(){
-        return new KeywordDAO();
+    public KeywordDAO createKeywordDAO() {
+        final KeywordDAO keywordDAO = new KeywordDAO();
+        return keywordDAO;
     }
 
     @Bean
-    public ArticleService createArticleService(){
+    public ArticleService createArticleService() {
         return new ArticleService();
     }
 }

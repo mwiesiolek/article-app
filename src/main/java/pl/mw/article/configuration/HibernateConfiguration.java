@@ -9,7 +9,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 import java.util.Properties;
@@ -18,8 +17,7 @@ import java.util.Properties;
  * Created by mwiesiolek on 30/09/2015.
  */
 @Configuration
-@EnableTransactionManagement
-@PropertySource(value = {"classpath:application.properties"})
+@PropertySource(value = {"classpath:/application.properties"})
 public class HibernateConfiguration {
 
     @Autowired
@@ -29,7 +27,7 @@ public class HibernateConfiguration {
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan(new String[]{"pl.mw.webshop.entity"});
+        sessionFactory.setPackagesToScan(new String[]{"pl.mw.article.domain"});
         sessionFactory.setHibernateProperties(hibernateProperties());
         return sessionFactory;
     }
@@ -54,7 +52,6 @@ public class HibernateConfiguration {
     }
 
     @Bean
-    @Autowired
     public HibernateTransactionManager transactionManager(SessionFactory s) {
         HibernateTransactionManager txManager = new HibernateTransactionManager();
         txManager.setSessionFactory(s);

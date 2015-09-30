@@ -16,7 +16,6 @@ import pl.mw.article.interceptor.ViewInterceptor;
  * Created by mwiesiolek on 30/09/2015.
  */
 @Configuration
-@ComponentScan(basePackages = {"pl.mw.article"})
 public class WebConfiguration extends WebMvcConfigurationSupport {
 
     @Autowired

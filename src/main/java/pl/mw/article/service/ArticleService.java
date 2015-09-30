@@ -6,10 +6,13 @@ import pl.mw.article.dao.ArticleDAO;
 import pl.mw.article.dao.AuthorDAO;
 import pl.mw.article.dao.KeywordDAO;
 
+import javax.transaction.Transactional;
+
 /**
  * Created by mwiesiolek on 30/09/2015.
  */
 @Service
+@Transactional
 public class ArticleService {
 
     @Autowired
