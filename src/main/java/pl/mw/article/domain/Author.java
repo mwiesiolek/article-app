@@ -1,6 +1,7 @@
 package pl.mw.article.domain;
 
 import javax.persistence.*;
+import java.util.Set;
 
 /**
  * Created by mwiesiolek on 30/09/2015.
@@ -18,6 +19,9 @@ public class Author {
 
     @Column(name = "surname", nullable = false)
     private final String surname;
+
+    @ManyToMany(mappedBy = "authors", fetch = FetchType.EAGER)
+    private Set<Article> articles;
 
     /**
      * Don't use it. Hibernate needs it
@@ -42,18 +46,13 @@ public class Author {
 
         final Author author = (Author) o;
 
-        if (!id.equals(author.id)) return false;
-        if (!firstName.equals(author.firstName)) return false;
-        return surname.equals(author.surname);
+        return id.equals(author.id);
 
     }
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + firstName.hashCode();
-        result = 31 * result + surname.hashCode();
-        return result;
+        return id.hashCode();
     }
 
     public Long getId() {

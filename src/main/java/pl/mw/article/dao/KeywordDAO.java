@@ -65,7 +65,7 @@ public class KeywordDAO extends AbstractDAO<Keyword> {
 
         Criteria criteria = getSession().createCriteria(Keyword.class);
         criteria.add(criterion);
-        Integer result = (Integer) criteria.setProjection(Projections.rowCount()).uniqueResult();
+        Long result = (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
 
         return result > 0;
     }

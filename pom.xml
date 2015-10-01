@@ -27,7 +27,7 @@
 		<com.lmax.distributor.version>3.2.0</com.lmax.distributor.version>
 		<hibernate.version>4.3.6.Final</hibernate.version>
 		<h2.version>1.4.187</h2.version>
-		<apache.commons.lang.version>2.6</apache.commons.lang.version>
+		<apache.commons.lang3.version>3.4</apache.commons.lang3.version>
 		<derby.version>10.11.1.1</derby.version>
 	</properties>
 
@@ -88,9 +88,9 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
-			<version>${apache.commons.lang.version}</version>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>${apache.commons.lang3.version}</version>
 		</dependency>
 
 	</dependencies>

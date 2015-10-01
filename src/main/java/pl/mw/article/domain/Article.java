@@ -30,10 +30,12 @@ public class Article {
     @Column(name = "publishDate", nullable = false)
     private final Long publishDate;
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @JoinTable(name = "article_authors")
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     private final Set<Author> authors;
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @JoinTable(name = "article_keywords")
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     private final Set<Keyword> keywords;
 
     /**
@@ -70,26 +72,13 @@ public class Article {
 
         final Article article = (Article) o;
 
-        if (!id.equals(article.id)) return false;
-        if (!header.equals(article.header)) return false;
-        if (!description.equals(article.description)) return false;
-        if (!text.equals(article.text)) return false;
-        if (!publishDate.equals(article.publishDate)) return false;
-        if (!authors.equals(article.authors)) return false;
-        return keywords.equals(article.keywords);
+        return id.equals(article.id);
 
     }
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + header.hashCode();
-        result = 31 * result + description.hashCode();
-        result = 31 * result + text.hashCode();
-        result = 31 * result + publishDate.hashCode();
-        result = 31 * result + authors.hashCode();
-        result = 31 * result + keywords.hashCode();
-        return result;
+        return id.hashCode();
     }
 
     public Long getId() {
@@ -110,6 +99,14 @@ public class Article {
 
     public Long getPublishDate() {
         return publishDate;
+    }
+
+    public void addAuthor(Author author){
+        authors.add(author);
+    }
+
+    public void addKeyword(Keyword keyword){
+        keywords.add(keyword);
     }
 
     public Set<Author> getAuthors() {

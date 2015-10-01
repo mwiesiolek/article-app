@@ -36,6 +36,8 @@ public class ArticleDAO extends AbstractDAO<Article>{
 
         Criteria criteria = getSession().createCriteria(Article.class);
         criteria.add(criterion);
+        criteria.createAlias("authors", "a");
+        criteria.createAlias("keywords", "k");
 
         return new LinkedHashSet<>(criteria.list());
     }
@@ -46,6 +48,8 @@ public class ArticleDAO extends AbstractDAO<Article>{
         criteria.add(criterion);
         criteria.setFirstResult(from);
         criteria.setMaxResults(number);
+        criteria.createAlias("authors", "a");
+        criteria.createAlias("keywords", "k");
 
         return new LinkedHashSet<>(criteria.list());
     }
@@ -69,7 +73,7 @@ public class ArticleDAO extends AbstractDAO<Article>{
 
         Criteria criteria = getSession().createCriteria(Article.class);
         criteria.add(criterion);
-        Integer result = (Integer)criteria.setProjection(Projections.rowCount()).uniqueResult();
+        Long result = (Long)criteria.setProjection(Projections.rowCount()).uniqueResult();
 
         return result > 0;
     }

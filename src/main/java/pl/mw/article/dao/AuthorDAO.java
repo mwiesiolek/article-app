@@ -64,7 +64,7 @@ public class AuthorDAO extends AbstractDAO<Author> {
 
         Criteria criteria = getSession().createCriteria(Author.class);
         criteria.add(criterion);
-        Integer result = (Integer) criteria.setProjection(Projections.rowCount()).uniqueResult();
+        Long result = (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
 
         return result > 0;
     }

@@ -1,6 +1,7 @@
 package pl.mw.article.domain;
 
 import javax.persistence.*;
+import java.util.Set;
 
 /**
  * Created by mwiesiolek on 30/09/2015.
@@ -15,6 +16,9 @@ public class Keyword {
 
     @Column(name = "word")
     private final String word;
+
+    @ManyToMany(mappedBy = "keywords", fetch = FetchType.EAGER)
+    private Set<Article> articles;
 
     /**
      * Don't use it, hibernate needs it
@@ -37,16 +41,13 @@ public class Keyword {
 
         final Keyword keyword = (Keyword) o;
 
-        if (!id.equals(keyword.id)) return false;
-        return word.equals(keyword.word);
+        return id.equals(keyword.id);
 
     }
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + word.hashCode();
-        return result;
+        return id.hashCode();
     }
 
     public Long getId() {
