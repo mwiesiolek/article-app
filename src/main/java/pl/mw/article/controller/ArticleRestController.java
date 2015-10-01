@@ -33,7 +33,7 @@ public class ArticleRestController {
                                     @RequestParam(required = false) String startDate,
                                     @RequestParam(required = false) String endDate,
                                     @RequestParam(required = false) String keyword) {
-        LOGGER.debug("REST method /rest/article/find was requested with given parameters: start = {}, number = {}, authorFirstName = {}, startDate = {}, endDate = {}, keyword = {}", start, number, authorFirstName, startDate, endDate, keyword);
+        LOGGER.debug("REST method /rest/article/find was requested with given parameters: start = {}, number = {}, authorFirstName = {}, authorSurname = {},startDate = {}, endDate = {}, keyword = {}", start, number, authorFirstName, authorSurname, startDate, endDate, keyword);
 
         Set<Article> articles;
         if(StringUtils.isBlank(authorFirstName) &&
@@ -47,14 +47,14 @@ public class ArticleRestController {
 
             Criterion allCriterions = null;
             if(!StringUtils.isBlank(authorFirstName)){
-                allCriterions = Restrictions.like("a.firstName", "%" + authorFirstName + "%");
+                allCriterions = Restrictions.like("authors.firstName", "%" + authorFirstName + "%");
             }
 
             if(!StringUtils.isBlank(authorSurname)){
                 if(allCriterions == null){
-                    allCriterions = Restrictions.like("a.surname", "%" + authorSurname + "%");
+                    allCriterions = Restrictions.like("authors.surname", "%" + authorSurname + "%");
                 }else{
-                    allCriterions = Restrictions.and(allCriterions, Restrictions.like("a.surname", "%" + authorSurname + "%"));
+                    allCriterions = Restrictions.and(allCriterions, Restrictions.like("authors.surname", "%" + authorSurname + "%"));
                 }
             }
 
@@ -76,9 +76,9 @@ public class ArticleRestController {
 
             if(!StringUtils.isBlank(keyword)) {
                 if(allCriterions == null){
-                    allCriterions = Restrictions.like("k.word", "%" + keyword + "%");
+                    allCriterions = Restrictions.like("keywords.word", "%" + keyword + "%");
                 }else{
-                    allCriterions = Restrictions.and(allCriterions, Restrictions.like("k.word", "%" + keyword + "%"));
+                    allCriterions = Restrictions.and(allCriterions, Restrictions.like("keywords.word", "%" + keyword + "%"));
                 }
             }
 

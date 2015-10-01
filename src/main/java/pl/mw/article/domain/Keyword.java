@@ -1,6 +1,7 @@
 package pl.mw.article.domain;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -12,26 +13,30 @@ public class Keyword {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private final Long id;
+    private final Long keywordId;
 
     @Column(name = "word")
     private final String word;
 
     @ManyToMany(mappedBy = "keywords", fetch = FetchType.EAGER)
-    private Set<Article> articles;
+    private final Set<Article> articles;
 
     /**
      * Don't use it, hibernate needs it
      */
     @Deprecated
     public Keyword() {
-        id = Long.valueOf(0);
+        keywordId = Long.valueOf(0);
         word = null;
+
+        articles = new HashSet<>();
     }
 
     public Keyword(final String word) {
-        id = Long.valueOf(0);
+        keywordId = Long.valueOf(0);
         this.word = word;
+
+        articles = new HashSet<>();
     }
 
     @Override
@@ -41,17 +46,17 @@ public class Keyword {
 
         final Keyword keyword = (Keyword) o;
 
-        return id.equals(keyword.id);
+        return keywordId.equals(keyword.keywordId);
 
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return keywordId.hashCode();
     }
 
-    public Long getId() {
-        return id;
+    public Long getKeywordId() {
+        return keywordId;
     }
 
     public String getWord() {

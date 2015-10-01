@@ -1,8 +1,11 @@
 package pl.mw.article.domain;
 
-import org.hibernate.annotations.Type;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,7 +18,7 @@ public class Article {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private final Long id;
+    private final Long articleId;
 
     @Column(name = "header", nullable = false)
     private final String header;
@@ -30,12 +33,12 @@ public class Article {
     @Column(name = "publishDate", nullable = false)
     private final Long publishDate;
 
-    @JoinTable(name = "article_authors")
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @JoinTable(name = "article_author", joinColumns = {@JoinColumn(name = "articleId")}, inverseJoinColumns = {@JoinColumn(name="authorId")})
     private final Set<Author> authors;
 
-    @JoinTable(name = "article_keywords")
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @JoinTable(name = "article_keyword", joinColumns = {@JoinColumn(name = "articleId")}, inverseJoinColumns = {@JoinColumn(name="keywordId")})
     private final Set<Keyword> keywords;
 
     /**
@@ -44,7 +47,7 @@ public class Article {
     @Deprecated
     public Article() {
 
-        id = Long.valueOf(0);
+        articleId = Long.valueOf(0);
         header = null;
         description = null;
         text = null;
@@ -55,7 +58,7 @@ public class Article {
     }
 
     public Article(final String header, final String description, final String text, final Long publishDate) {
-        this.id = Long.valueOf(0);
+        this.articleId = Long.valueOf(0);
         this.header = header;
         this.description = description;
         this.text = text;
@@ -72,17 +75,17 @@ public class Article {
 
         final Article article = (Article) o;
 
-        return id.equals(article.id);
+        return articleId.equals(article.articleId);
 
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return articleId.hashCode();
     }
 
     public Long getId() {
-        return id;
+        return articleId;
     }
 
     public String getHeader() {

@@ -44,6 +44,6 @@ public class AuthorDAOTest {
         authorDAO.saveOrUpdate(author);
 
         //then
-        assertTrue(author.getId() > 0);
+        assertTrue(author.getAuthorId() > 0);
     }
 }

@@ -23,6 +23,7 @@ import pl.mw.article.domain.builder.KeywordBuilder;
 import javax.transaction.Transactional;
 import java.text.ParseException;
 import java.util.Set;
+import java.util.TimeZone;
 
 import static org.junit.Assert.assertEquals;
 
@@ -34,7 +35,7 @@ import static org.junit.Assert.assertEquals;
 @EnableTransactionManagement
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class ArticleRestControllerTest {
-    final FastDateFormat dateFormatter = FastDateFormat.getInstance("yyyy-MM-dd");
+    final FastDateFormat dateFormatter = FastDateFormat.getInstance("yyyy-MM-dd", TimeZone.getTimeZone("GMT"));
 
     @Autowired
     private ArticleRestController articleRestController;
@@ -63,13 +64,14 @@ public class ArticleRestControllerTest {
     public void testWithSurname() throws ParseException {
 
         //given
+        final int expected = 5;
         generateArticles();
 
         //when
-        final Set<Article> articles = articleRestController.getArticles(0, 5, null, "surname", null, null, null);
+        final Set<Article> articles = articleRestController.getArticles(0, expected, null, "sur", null, null, null);
 
         //then
-        assertEquals(5, articles.size());
+        assertEquals(expected, articles.size());
     }
 
     private void generateArticles() throws ParseException {

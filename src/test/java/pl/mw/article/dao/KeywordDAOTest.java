@@ -43,6 +43,6 @@ public class KeywordDAOTest {
         keywordDAO.saveOrUpdate(word);
 
         //then
-        assertTrue(word.getId() > 0);
+        assertTrue(word.getKeywordId() > 0);
     }
 }

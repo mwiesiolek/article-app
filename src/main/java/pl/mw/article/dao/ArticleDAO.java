@@ -4,7 +4,9 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
+import org.hibernate.sql.JoinType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import pl.mw.article.domain.Article;
@@ -36,8 +38,9 @@ public class ArticleDAO extends AbstractDAO<Article>{
 
         Criteria criteria = getSession().createCriteria(Article.class);
         criteria.add(criterion);
-        criteria.createAlias("authors", "a");
-        criteria.createAlias("keywords", "k");
+        criteria.addOrder(Order.desc("id"));
+        criteria.createAlias("authors", "a", JoinType.LEFT_OUTER_JOIN);
+        criteria.createAlias("keywords", "k", JoinType.LEFT_OUTER_JOIN);
 
         return new LinkedHashSet<>(criteria.list());
     }
@@ -48,8 +51,9 @@ public class ArticleDAO extends AbstractDAO<Article>{
         criteria.add(criterion);
         criteria.setFirstResult(from);
         criteria.setMaxResults(number);
-        criteria.createAlias("authors", "a");
-        criteria.createAlias("keywords", "k");
+        criteria.addOrder(Order.desc("id"));
+        criteria.createAlias("authors", "authors", JoinType.LEFT_OUTER_JOIN);
+        criteria.createAlias("keywords", "keywords", JoinType.LEFT_OUTER_JOIN);
 
         return new LinkedHashSet<>(criteria.list());
     }
