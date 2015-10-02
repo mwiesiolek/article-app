@@ -13,6 +13,7 @@ public class Author {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "authorId", unique = true)
     private final Long authorId;
 
     @Column(name = "firstName", nullable = false)
@@ -21,7 +22,7 @@ public class Author {
     @Column(name = "surname", nullable = false)
     private final String surname;
 
-    @ManyToMany(mappedBy = "authors", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "authors", fetch = FetchType.LAZY)
     private final Set<Article> articles;
 
     /**
@@ -70,5 +71,9 @@ public class Author {
 
     public String getSurname() {
         return surname;
+    }
+
+    public void addArticle(Article article){
+        articles.add(article);
     }
 }

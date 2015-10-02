@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 import pl.mw.article.dao.ArticleDAO;
 import pl.mw.article.domain.Article;
 import pl.mw.article.enums.Alert;
+import pl.mw.article.service.ArticleService;
 
 import java.util.Set;
 
@@ -25,13 +26,13 @@ public class ArticleController {
     public static final int ARTICLES_UPPER_BOUND = 10;
 
     @Autowired
-    private ArticleDAO articleDAO;
+    private ArticleService articleService;
 
     @RequestMapping(value = "/list")
     public ModelAndView list(){
         ModelAndView modelAndView = new ModelAndView("article/list");
 
-        final Set<Article> articles = articleDAO.findAll(0, ARTICLES_UPPER_BOUND);
+        final Set<Article> articles = articleService.findAll(0, ARTICLES_UPPER_BOUND);
         LOGGER.info("Found given number of articles: {}", articles.size());
 
         modelAndView.addObject("articles", articles);
@@ -43,7 +44,7 @@ public class ArticleController {
     public ModelAndView add(@ModelAttribute Article article){
         ModelAndView modelAndView = new ModelAndView("article/manage");
 
-        articleDAO.saveOrUpdate(article);
+        articleService.saveOrUpdate(article);
 
         if(article.getId() > 0){
             LOGGER.info("Article with given id: {} was persisted in DB.", article.getId());
@@ -62,7 +63,7 @@ public class ArticleController {
     public ModelAndView edit(@RequestParam Long id){
         ModelAndView modelAndView = new ModelAndView("article/manage");
 
-        final Article article = articleDAO.find(id);
+        final Article article = articleService.find(id);
         if(article == null){
             LOGGER.warn("Article with given id {} was not found in DB.");
 
@@ -80,7 +81,7 @@ public class ArticleController {
     public ModelAndView edit(@ModelAttribute Article article){
         ModelAndView modelAndView = new ModelAndView("article/manage");
 
-        articleDAO.saveOrUpdate(article);
+        articleService.saveOrUpdate(article);
 
         return modelAndView;
     }

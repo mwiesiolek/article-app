@@ -18,6 +18,7 @@ public class Article {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "articleId", unique = true)
     private final Long articleId;
 
     @Column(name = "header", nullable = false)

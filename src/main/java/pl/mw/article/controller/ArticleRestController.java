@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pl.mw.article.dao.ArticleDAO;
 import pl.mw.article.domain.Article;
+import pl.mw.article.service.ArticleService;
 
 import java.util.Set;
 
@@ -23,26 +24,26 @@ public class ArticleRestController {
     private static final Logger LOGGER = LogManager.getLogger(ArticleRestController.class);
 
     @Autowired
-    private ArticleDAO articleDAO;
+    private ArticleService articleService;
 
     @RequestMapping(value = "/find")
     public Set<Article> getArticles(@RequestParam Integer start,
                                     @RequestParam Integer number,
                                     @RequestParam(required = false) String authorFirstName,
                                     @RequestParam(required = false) String authorSurname,
-                                    @RequestParam(required = false) String startDate,
-                                    @RequestParam(required = false) String endDate,
+                                    @RequestParam(required = false) Long startDate,
+                                    @RequestParam(required = false) Long endDate,
                                     @RequestParam(required = false) String keyword) {
         LOGGER.debug("REST method /rest/article/find was requested with given parameters: start = {}, number = {}, authorFirstName = {}, authorSurname = {},startDate = {}, endDate = {}, keyword = {}", start, number, authorFirstName, authorSurname, startDate, endDate, keyword);
 
         Set<Article> articles;
         if(StringUtils.isBlank(authorFirstName) &&
                 StringUtils.isBlank(authorSurname) &&
-                StringUtils.isBlank(startDate) &&
-                StringUtils.isBlank(endDate) &&
+                (startDate == null) &&
+                (endDate == null) &&
                 StringUtils.isBlank(keyword)){
 
-            articles = articleDAO.findAll(start, number);
+            articles = articleService.findAll(start, number);
         }else{
 
             Criterion allCriterions = null;
@@ -58,19 +59,27 @@ public class ArticleRestController {
                 }
             }
 
-            if(!StringUtils.isBlank(startDate)){
+            if(!(startDate == null) && endDate == null){
                 if(allCriterions == null){
                     allCriterions = Restrictions.eq("publishDate", startDate);
                 }else{
-                    allCriterions = Restrictions.and(allCriterions, Restrictions.eq("publishDate", startDate));
+                    allCriterions = Restrictions.and(allCriterions, Restrictions.gt("publishDate", startDate));
                 }
             }
 
-            if(!StringUtils.isBlank(endDate)){
+            if(!(endDate == null) && startDate == null){
                 if(allCriterions == null){
                     allCriterions = Restrictions.eq("publishDate", endDate);
                 }else{
-                    allCriterions = Restrictions.and(allCriterions, Restrictions.eq("publishDate", endDate));
+                    allCriterions = Restrictions.and(allCriterions, Restrictions.lt("publishDate", endDate));
+                }
+            }
+
+            if(!(endDate == null) && !(startDate == null)){
+                if(allCriterions == null){
+                    allCriterions = Restrictions.between("publishDate", startDate, endDate);
+                }else{
+                    allCriterions = Restrictions.and(allCriterions, Restrictions.between("publishDate", startDate, endDate));
                 }
             }
 
@@ -82,7 +91,7 @@ public class ArticleRestController {
                 }
             }
 
-            articles = articleDAO.findAllWith(allCriterions, start, number);
+            articles = articleService.findAllWith(allCriterions, start, number);
         }
 
         return articles;

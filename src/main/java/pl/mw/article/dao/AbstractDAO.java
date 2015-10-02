@@ -12,8 +12,12 @@ public abstract class AbstractDAO<Type> {
     @Autowired
     private SessionFactory sessionFactory;
 
-    public void saveOrUpdate(Type article) {
-        getSession().saveOrUpdate(article);
+    public void saveOrUpdate(Type type) {
+        getSession().saveOrUpdate(type);
+    }
+
+    public void flush(){
+        getSession().flush();
     }
 
     public Session getSession() {

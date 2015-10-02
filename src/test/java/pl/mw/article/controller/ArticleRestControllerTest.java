@@ -19,9 +19,11 @@ import pl.mw.article.domain.Keyword;
 import pl.mw.article.domain.builder.ArticleBuilder;
 import pl.mw.article.domain.builder.AuthorBuilder;
 import pl.mw.article.domain.builder.KeywordBuilder;
+import pl.mw.article.service.ArticleService;
 
 import javax.transaction.Transactional;
 import java.text.ParseException;
+import java.util.Collections;
 import java.util.Set;
 import java.util.TimeZone;
 
@@ -41,7 +43,7 @@ public class ArticleRestControllerTest {
     private ArticleRestController articleRestController;
 
     @Autowired
-    private ArticleDAO articleDAO;
+    private ArticleService articleService;
 
     @Test
     @Transactional
@@ -74,6 +76,102 @@ public class ArticleRestControllerTest {
         assertEquals(expected, articles.size());
     }
 
+    @Test
+    @Transactional
+    @Rollback(true)
+    public void testWithFirstname() throws ParseException {
+
+        //given
+        final int expected = 5;
+        generateArticles();
+
+        //when
+        final Set<Article> articles = articleRestController.getArticles(0, expected, "first", null, null, null, null);
+
+        //then
+        assertEquals(expected, articles.size());
+    }
+
+    @Test
+    @Transactional
+    @Rollback(true)
+    public void testWithFirstnameAndSurname() throws ParseException {
+
+        //given
+        final int expected = 5;
+        generateArticles();
+
+        //when
+        final Set<Article> articles = articleRestController.getArticles(0, expected, "first", "sur", null, null, null);
+
+        //then
+        assertEquals(expected, articles.size());
+    }
+
+    @Test
+    @Transactional
+    @Rollback(true)
+    public void testWithStartDate() throws ParseException {
+
+        //given
+        final int expected = 5;
+        generateArticles();
+
+        //when
+        final Set<Article> articles = articleRestController.getArticles(0, expected, null, "sur", dateFormatter.parse("2015-09-10").getTime(), null, null);
+
+        //then
+        assertEquals(expected, articles.size());
+    }
+
+    @Test
+    @Transactional
+    @Rollback(true)
+    public void testWithEndDate() throws ParseException {
+
+        //given
+        final int expected = 5;
+        generateArticles();
+
+        //when
+        final Set<Article> articles = articleRestController.getArticles(0, expected, null, "sur", null, dateFormatter.parse("2015-10-10").getTime(), null);
+
+        //then
+        assertEquals(expected, articles.size());
+    }
+
+    @Test
+    @Transactional
+    @Rollback(true)
+    public void testInBetweenStartAndEndDate() throws ParseException {
+
+        //given
+        final int expected = 5;
+        generateArticles();
+
+        //when
+        final Set<Article> articles = articleRestController.getArticles(0, expected, null, "sur", dateFormatter.parse("2015-09-10").getTime(), dateFormatter.parse("2015-10-10").getTime(), null);
+
+        //then
+        assertEquals(expected, articles.size());
+    }
+
+    @Test
+    @Transactional
+    @Rollback(true)
+    public void testWithKeyword() throws ParseException {
+
+        //given
+        final int expected = 5;
+        generateArticles();
+
+        //when
+        final Set<Article> articles = articleRestController.getArticles(0, expected, null, null, null, null, "word");
+
+        //then
+        assertEquals(expected, articles.size());
+    }
+
     private void generateArticles() throws ParseException {
 
         int amount = 20;
@@ -94,10 +192,7 @@ public class ArticleRestControllerTest {
                     .withWord(String.format("word%d", i))
                     .build();
 
-            article.addAuthor(author);
-            article.addKeyword(word);
-
-            articleDAO.saveOrUpdate(article);
+            articleService.addWithJoins(article, Collections.singleton(author), Collections.singleton(word));
         }
     }
 }

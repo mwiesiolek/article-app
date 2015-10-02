@@ -13,12 +13,13 @@ public class Keyword {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "keywordId", unique = true)
     private final Long keywordId;
 
     @Column(name = "word")
     private final String word;
 
-    @ManyToMany(mappedBy = "keywords", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "keywords", fetch = FetchType.LAZY)
     private final Set<Article> articles;
 
     /**
@@ -61,5 +62,9 @@ public class Keyword {
 
     public String getWord() {
         return word;
+    }
+
+    public void addArticle(Article article){
+        articles.add(article);
     }
 }

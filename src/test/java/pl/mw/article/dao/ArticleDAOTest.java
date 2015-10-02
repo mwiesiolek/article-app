@@ -84,12 +84,13 @@ public class ArticleDAOTest {
 
         //when
         articleDAO.saveOrUpdate(article);
+        articleDAO.flush();
         final Article fromDB = articleDAO.find(article.getId());
 
         //then
         assertEquals(article, fromDB);
-        assertEquals(article.getAuthors(), fromDB.getAuthors());
-        assertEquals(article.getKeywords(), fromDB.getKeywords());
+        assertEquals(article.getAuthors().size(), fromDB.getAuthors().size());
+        assertEquals(article.getKeywords().size(), fromDB.getKeywords().size());
     }
 
     @Test
