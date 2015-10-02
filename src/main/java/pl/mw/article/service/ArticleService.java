@@ -42,7 +42,6 @@ public class ArticleService {
         }
 
         articleDAO.saveOrUpdate(article);
-        articleDAO.flush();
     }
 
     /**
@@ -66,11 +65,30 @@ public class ArticleService {
         return articleDAO.findAll(from, number);
     }
 
+    /**
+     * Find article with given id
+     * @param id
+     * @return
+     */
     public Article find(final Long id){
         return articleDAO.find(id);
     }
 
+    /**
+     * Saves or updates an article
+     * @param article
+     */
     public void  saveOrUpdate(Article article){
         articleDAO.saveOrUpdate(article);
+    }
+
+    /**
+     * Removes article with given id
+     * @param id
+     */
+    public void remove(Long id){
+
+        Article article = articleDAO.find(id);
+        articleDAO.delete(article);
     }
 }

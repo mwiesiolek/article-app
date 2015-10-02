@@ -11,7 +11,6 @@
 
     <!--CSS-->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/css/carousel-theme.css" rel="stylesheet" />
     <link href="/css/main.css" rel="stylesheet" />
     <link href="/css/normalize.css" rel="stylesheet" />
 
@@ -23,15 +22,13 @@
 
     <script src="/js/common/main.js"></script>
     <script src="/js/common/closeable-alert-controller.js"></script>
+    <script src="/js/common/remove-controller.js"></script>
 
-    <!-- REST ANGULARJS SCRIPTS BELOW -->
-
-    <script src="/js/article/article-controller.js"></script>
 </head>
 <body>
     <#include "alerts.ftl">
 
-    <div id="webshop-body" class="container marketing">
+    <div id="article-app-body" class="container">
         <#include "${bodyView}">
     </div>
 

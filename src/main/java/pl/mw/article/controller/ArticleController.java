@@ -20,7 +20,7 @@ import java.util.Set;
  * Created by mwiesiolek on 30/09/2015.
  */
 @Controller
-@RequestMapping(value = "//article")
+@RequestMapping(value = "/article")
 public class ArticleController {
     private static final Logger LOGGER = LogManager.getLogger(ArticleController.class);
     public static final int ARTICLES_UPPER_BOUND = 10;
@@ -84,5 +84,12 @@ public class ArticleController {
         articleService.saveOrUpdate(article);
 
         return modelAndView;
+    }
+
+    @RequestMapping(value = "/remove")
+    public ModelAndView remove(@RequestParam Long id){
+        articleService.remove(id);
+
+        return list();
     }
 }

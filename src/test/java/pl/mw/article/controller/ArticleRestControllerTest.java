@@ -45,6 +45,9 @@ public class ArticleRestControllerTest {
     @Autowired
     private ArticleService articleService;
 
+    @Autowired
+    private ArticleDAO articleDAO;
+
     @Test
     @Transactional
     @Rollback(true)
@@ -193,6 +196,7 @@ public class ArticleRestControllerTest {
                     .build();
 
             articleService.addWithJoins(article, Collections.singleton(author), Collections.singleton(word));
+            articleDAO.flush();
         }
     }
 }
