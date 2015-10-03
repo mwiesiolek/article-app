@@ -29,8 +29,6 @@ public class WebConfiguration extends WebMvcConfigurationSupport {
                 .addResourceLocations("classpath:/static/js/");
         registry.addResourceHandler("/fonts/**")
                 .addResourceLocations("classpath:/static/fonts/");
-        registry.addResourceHandler("/img/**")
-                .addResourceLocations("classpath:/static/img/");
     }
 
     @Override
@@ -38,7 +36,7 @@ public class WebConfiguration extends WebMvcConfigurationSupport {
         registry.addInterceptor(viewInterceptor);
     }
 
-    @Bean(name = "freeMarkerViewResolver")
+    @Bean
     public ViewResolver getViewResolver(FreeMarkerConfigurer freeMarkerConfigurer) {
         freeMarkerConfigurer.setDefaultEncoding("UTF-8");
 

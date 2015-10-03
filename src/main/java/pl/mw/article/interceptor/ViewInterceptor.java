@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ViewInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response, final Object handler) throws Exception {
-        return false;
+        return true;
     }
 
     @Override

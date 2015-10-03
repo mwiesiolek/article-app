@@ -28,7 +28,7 @@
 <body>
     <#include "alerts.ftl">
 
-    <div id="article-app-body" class="container">
+    <div id="article-app-body" class="container panel">
         <#include "${bodyView}">
     </div>
 

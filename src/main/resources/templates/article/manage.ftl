@@ -6,30 +6,50 @@
         </div>
         <div class="panel-body">
             <form action="/article/add" method="post">
-                <@spring.formHiddenInput "article.articleId", ""/>
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <@spring.formHiddenInput "articleView.articleId", ""/>
 
+                <!-- HEADER -->
+                <div class="form-group">
+                    <label for="articleView.header" >Header</label>
+                    <@spring.formInput "articleView.header", "placeholder=\"Header\" class=\"form-control\"", "text"/>
+                    <#list spring.status.errorMessages as error> <b>${error}</b> <br> </#list>
+                </div>
+
+                 <!-- SHORT DESCRIPTION -->
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title" id="page-content">${content_content}<a class="anchorjs-link"
-                                                                                       href="#page-content"><span
-                                class="anchorjs-icon"></span></a></h3>
+                        <h3 class="panel-title" id="article-desc">Short description<a class="anchorjs-link"  href="#article-desc"><span class="anchorjs-icon"></span></a></h3>
                     </div>
                     <div class="panel-body my-custom-textarea" >
                         <div class="form-group">
-                        <@spring.formTextarea "pageView.page.content", "placeholder=\"${content_content}\" class=\"form-control text-area\""/>
-                        <#list spring.status.errorMessages as error> <b>${error}</b> <br> </#list>
+                            <@spring.formTextarea "articleView.description", "placeholder=\"Short description\" class=\"form-control text-area\""/>
+                            <#list spring.status.errorMessages as error> <b>${error}</b> <br> </#list>
                         </div>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="page.header" >${content_price}</label>
-                <@spring.formInput "productView.product.price", "placeholder=\"${content_price}\" class=\"form-control\"", "text"/>
-                    <#list spring.status.errorMessages as error> <b>${error}</b> <br> </#list>
+                 <!-- TEXT -->
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title" id="article-text">Text<a class="anchorjs-link"  href="#article-text"><span class="anchorjs-icon"></span></a></h3>
+                    </div>
+                    <div class="panel-body my-custom-textarea" >
+                        <div class="form-group">
+                            <@spring.formTextarea "articleView.text", "placeholder=\"Text\" class=\"form-control text-area\""/>
+                            <#list spring.status.errorMessages as error> <b>${error}</b> <br> </#list>
+                        </div>
+                    </div>
                 </div>
 
+                 <!-- AUTHORS -->
                 <div class="form-group">
-                <@spring.formSingleSelect "productView.product.currency", currencies />
+                    <@spring.formSingleSelect "articleView.authors", authors />
+                </div>
+
+                 <!-- KEYWORDS -->
+                <div class="form-group">
+                    <@spring.formSingleSelect "articleView.keywords", keywords />
                 </div>
 
                 <div class="form-group">

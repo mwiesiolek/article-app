@@ -54,7 +54,7 @@ public class ArticleDAOTest {
         articleDAO.saveOrUpdate(article);
 
         //then
-        assertTrue(article.getId() > 0);
+        assertTrue(article.getArticleId() > 0);
     }
 
     @Test
@@ -85,7 +85,7 @@ public class ArticleDAOTest {
         //when
         articleDAO.saveOrUpdate(article);
         articleDAO.flush();
-        final Article fromDB = articleDAO.find(article.getId());
+        final Article fromDB = articleDAO.find(article.getArticleId());
 
         //then
         assertEquals(article, fromDB);
@@ -212,7 +212,7 @@ public class ArticleDAOTest {
         //when
         articleDAO.saveOrUpdate(article);
         articleDAO.delete(article);
-        final Article fromDB = articleDAO.find(article.getId());
+        final Article fromDB = articleDAO.find(article.getArticleId());
 
         //then
         assertNull(fromDB);

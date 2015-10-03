@@ -6,6 +6,8 @@ import pl.mw.article.dao.ArticleDAO;
 import pl.mw.article.dao.AuthorDAO;
 import pl.mw.article.dao.KeywordDAO;
 import pl.mw.article.service.ArticleService;
+import pl.mw.article.service.AuthorService;
+import pl.mw.article.service.KeywordService;
 
 /**
  * Created by mwiesiolek on 30/09/2015.
@@ -34,5 +36,15 @@ public class DBServicesConfiguration {
     @Bean
     public ArticleService createArticleService() {
         return new ArticleService();
+    }
+
+    @Bean
+    public AuthorService createAuthorService(){
+        return new AuthorService();
+    }
+
+    @Bean
+    public KeywordService createKeywordService(){
+        return new KeywordService();
     }
 }

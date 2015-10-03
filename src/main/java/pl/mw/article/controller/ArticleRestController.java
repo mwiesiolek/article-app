@@ -6,6 +6,7 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,7 +27,7 @@ public class ArticleRestController {
     @Autowired
     private ArticleService articleService;
 
-    @RequestMapping(value = "/find")
+    @RequestMapping(value = "/find", produces = MediaType.APPLICATION_JSON_VALUE)
     public Set<Article> getArticles(@RequestParam Integer start,
                                     @RequestParam Integer number,
                                     @RequestParam(required = false) String authorFirstName,

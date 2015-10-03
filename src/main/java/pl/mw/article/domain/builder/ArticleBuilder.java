@@ -38,6 +38,17 @@ public class ArticleBuilder {
         return this;
     }
 
+    public static ArticleBuilder copy(Article article){
+        ArticleBuilder articleBuilder = anArticle();
+
+        articleBuilder.header = article.getHeader();
+        articleBuilder.description =article.getDescription();
+        articleBuilder.text = article.getText();
+        articleBuilder.publishDate = article.getPublishDate();
+
+        return articleBuilder;
+    }
+
     public ArticleBuilder but() {
         return anArticle().withHeader(header).withDescription(description).withText(text).withPublishDate(publishDate);
     }

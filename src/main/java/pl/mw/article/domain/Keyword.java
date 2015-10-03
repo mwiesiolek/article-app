@@ -56,6 +56,11 @@ public class Keyword {
         return keywordId.hashCode();
     }
 
+    @Override
+    public String toString() {
+        return word;
+    }
+
     public Long getKeywordId() {
         return keywordId;
     }

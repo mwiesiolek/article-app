@@ -61,6 +61,15 @@ public class Author {
         return authorId.hashCode();
     }
 
+    @Override
+    public String toString() {
+        return getSignature();
+    }
+
+    public String getSignature(){
+        return String.format("%s %s", firstName, surname);
+    }
+
     public Long getAuthorId() {
         return authorId;
     }

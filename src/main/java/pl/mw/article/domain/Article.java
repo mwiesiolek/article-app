@@ -85,7 +85,7 @@ public class Article {
         return articleId.hashCode();
     }
 
-    public Long getId() {
+    public Long getArticleId() {
         return articleId;
     }
 
