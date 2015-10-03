@@ -19,6 +19,10 @@ public class ViewInterceptor implements HandlerInterceptor {
 
     @Override
     public void postHandle(final HttpServletRequest request, final HttpServletResponse response, final Object handler, final ModelAndView modelAndView) throws Exception {
+        if(modelAndView == null){
+            return;
+        }
+
         String bodyTile = modelAndView.getViewName();
         if (bodyTile.contains("redirect:")) {
             return;

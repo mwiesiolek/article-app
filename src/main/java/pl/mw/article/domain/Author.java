@@ -37,8 +37,8 @@ public class Author {
         articles = new HashSet<>();
     }
 
-    public Author(final String firstName, final String surname) {
-        authorId = Long.valueOf(0);
+    public Author(Long id, final String firstName, final String surname) {
+        authorId = id;
         this.firstName = firstName;
         this.surname = surname;
 

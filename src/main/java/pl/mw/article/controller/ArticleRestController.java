@@ -1,6 +1,7 @@
 package pl.mw.article.controller;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.criterion.Criterion;
@@ -10,11 +11,13 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import pl.mw.article.dao.ArticleDAO;
 import pl.mw.article.domain.Article;
 import pl.mw.article.service.ArticleService;
+import pl.mw.article.viewmodel.json.ArticleWrapper;
 
+import java.text.ParseException;
 import java.util.Set;
+import java.util.TimeZone;
 
 /**
  * Created by mwiesiolek on 30/09/2015.
@@ -24,20 +27,26 @@ import java.util.Set;
 public class ArticleRestController {
     private static final Logger LOGGER = LogManager.getLogger(ArticleRestController.class);
 
+    private static final FastDateFormat dateTimeFormatter = FastDateFormat.getInstance("yyyy-MM-dd", TimeZone.getTimeZone("GMT"));
+
     @Autowired
     private ArticleService articleService;
 
     @RequestMapping(value = "/find", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Set<Article> getArticles(@RequestParam Integer start,
+    public ArticleWrapper getArticles(@RequestParam Integer start,
                                     @RequestParam Integer number,
                                     @RequestParam(required = false) String authorFirstName,
                                     @RequestParam(required = false) String authorSurname,
-                                    @RequestParam(required = false) Long startDate,
-                                    @RequestParam(required = false) Long endDate,
-                                    @RequestParam(required = false) String keyword) {
-        LOGGER.debug("REST method /rest/article/find was requested with given parameters: start = {}, number = {}, authorFirstName = {}, authorSurname = {},startDate = {}, endDate = {}, keyword = {}", start, number, authorFirstName, authorSurname, startDate, endDate, keyword);
+                                    @RequestParam(required = false) String sStartDate,
+                                    @RequestParam(required = false) String sEndDate,
+                                    @RequestParam(required = false) String keyword) throws ParseException {
+        LOGGER.debug("REST method /rest/article/find was requested with given parameters: start = {}, number = {}, authorFirstName = {}, authorSurname = {},startDate = {}, endDate = {}, keyword = {}", start, number, authorFirstName, authorSurname, sStartDate, sEndDate, keyword);
+
+        Long startDate = sStartDate == null ? null : Long.valueOf(dateTimeFormatter.parse(sStartDate).getTime());
+        Long endDate = sEndDate == null ? null : Long.valueOf(dateTimeFormatter.parse(sEndDate).getTime());
 
         Set<Article> articles;
+        ArticleWrapper articleWrapper;
         if(StringUtils.isBlank(authorFirstName) &&
                 StringUtils.isBlank(authorSurname) &&
                 (startDate == null) &&
@@ -62,7 +71,7 @@ public class ArticleRestController {
 
             if(!(startDate == null) && endDate == null){
                 if(allCriterions == null){
-                    allCriterions = Restrictions.eq("publishDate", startDate);
+                    allCriterions = Restrictions.gt("publishDate", startDate);
                 }else{
                     allCriterions = Restrictions.and(allCriterions, Restrictions.gt("publishDate", startDate));
                 }
@@ -70,7 +79,7 @@ public class ArticleRestController {
 
             if(!(endDate == null) && startDate == null){
                 if(allCriterions == null){
-                    allCriterions = Restrictions.eq("publishDate", endDate);
+                    allCriterions = Restrictions.lt("publishDate", endDate);
                 }else{
                     allCriterions = Restrictions.and(allCriterions, Restrictions.lt("publishDate", endDate));
                 }
@@ -95,6 +104,9 @@ public class ArticleRestController {
             articles = articleService.findAllWith(allCriterions, start, number);
         }
 
-        return articles;
+        Long size = articleService.size();
+        articleWrapper = new ArticleWrapper(articles, size, number);
+
+        return articleWrapper;
     }
 }

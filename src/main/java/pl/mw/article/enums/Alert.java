@@ -1,7 +1,7 @@
 package pl.mw.article.enums;
 
 /**
- * Created by Maksik on 16/05/2015.
+ * Created by mwiesiolek on 16/05/2015.
  */
 public enum Alert {
 	ERROR("errorMsg"), NOTIFICATION("notification"), SUCCESS("success");

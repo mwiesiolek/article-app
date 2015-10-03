@@ -11,7 +11,7 @@
 
     <!--CSS-->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/css/main.css" rel="stylesheet" />
+    <link href="/css/main-article.css" rel="stylesheet" />
     <link href="/css/normalize.css" rel="stylesheet" />
 
     <!--JS-->

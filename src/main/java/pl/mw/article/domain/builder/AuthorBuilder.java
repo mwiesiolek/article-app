@@ -8,6 +8,7 @@ import pl.mw.article.domain.Author;
 public class AuthorBuilder {
     private String firstName;
     private String surname;
+    private Long id;
 
     private AuthorBuilder() {
     }
@@ -26,12 +27,18 @@ public class AuthorBuilder {
         return this;
     }
 
+    public AuthorBuilder withAuthorId(Long id){
+        this.id = id;
+
+        return this;
+    }
+
     public AuthorBuilder but() {
         return anAuthor().withFirstName(firstName).withSurname(surname);
     }
 
     public Author build() {
-        Author author = new Author(firstName, surname);
+        Author author = new Author(id, firstName, surname);
         return author;
     }
 }

@@ -33,8 +33,8 @@ public class Keyword {
         articles = new HashSet<>();
     }
 
-    public Keyword(final String word) {
-        keywordId = Long.valueOf(0);
+    public Keyword(Long id, final String word) {
+        keywordId = id;
         this.word = word;
 
         articles = new HashSet<>();

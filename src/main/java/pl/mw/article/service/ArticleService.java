@@ -91,4 +91,9 @@ public class ArticleService {
         Article article = articleDAO.find(id);
         articleDAO.delete(article);
     }
+
+    public Long size(){
+        return articleDAO.size();
+    }
+
 }

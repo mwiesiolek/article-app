@@ -68,15 +68,18 @@ public class ArticleDAOTest {
                 .withHeader("header")
                 .withPublishDate(System.currentTimeMillis())
                 .withText("long text")
+                .withArticleId(Long.valueOf(0))
                 .build();
 
         final Author author = AuthorBuilder.anAuthor()
                 .withSurname("surname")
                 .withFirstName("firstName")
+                .withAuthorId(Long.valueOf(0))
                 .build();
 
         final Keyword word = KeywordBuilder.aKeyword()
                 .withWord("word")
+                .withKeywordId(Long.valueOf(0))
                 .build();
 
         article.addAuthor(author);

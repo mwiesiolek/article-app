@@ -10,6 +10,7 @@ public class ArticleBuilder {
     private String description;
     private String text;
     private Long publishDate;
+    private Long id;
 
     private ArticleBuilder() {
     }
@@ -38,6 +39,11 @@ public class ArticleBuilder {
         return this;
     }
 
+    public ArticleBuilder withArticleId(Long id){
+        this.id = id;
+        return this;
+    }
+
     public static ArticleBuilder copy(Article article){
         ArticleBuilder articleBuilder = anArticle();
 
@@ -54,7 +60,7 @@ public class ArticleBuilder {
     }
 
     public Article build() {
-        Article article = new Article(header, description, text, publishDate);
+        Article article = new Article(id, header, description, text, publishDate);
         return article;
     }
 }

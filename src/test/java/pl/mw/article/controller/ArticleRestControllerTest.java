@@ -20,6 +20,7 @@ import pl.mw.article.domain.builder.ArticleBuilder;
 import pl.mw.article.domain.builder.AuthorBuilder;
 import pl.mw.article.domain.builder.KeywordBuilder;
 import pl.mw.article.service.ArticleService;
+import pl.mw.article.viewmodel.json.ArticleWrapper;
 
 import javax.transaction.Transactional;
 import java.text.ParseException;
@@ -57,10 +58,10 @@ public class ArticleRestControllerTest {
         generateArticles();
 
         //when
-        final Set<Article> articles = articleRestController.getArticles(0, 5, null, null, null, null, null);
+        final ArticleWrapper articleWrapper = articleRestController.getArticles(0, 5, null, null, null, null, null);
 
         //then
-        assertEquals(5, articles.size());
+        assertEquals(5, articleWrapper.getArticles().size());
     }
 
     @Test
@@ -73,10 +74,10 @@ public class ArticleRestControllerTest {
         generateArticles();
 
         //when
-        final Set<Article> articles = articleRestController.getArticles(0, expected, null, "sur", null, null, null);
+        final ArticleWrapper articleWrapper = articleRestController.getArticles(0, expected, null, "sur", null, null, null);
 
         //then
-        assertEquals(expected, articles.size());
+        assertEquals(expected, articleWrapper.getArticles().size());
     }
 
     @Test
@@ -89,10 +90,10 @@ public class ArticleRestControllerTest {
         generateArticles();
 
         //when
-        final Set<Article> articles = articleRestController.getArticles(0, expected, "first", null, null, null, null);
+        final ArticleWrapper articleWrapper = articleRestController.getArticles(0, expected, "first", null, null, null, null);
 
         //then
-        assertEquals(expected, articles.size());
+        assertEquals(expected, articleWrapper.getArticles().size());
     }
 
     @Test
@@ -105,10 +106,10 @@ public class ArticleRestControllerTest {
         generateArticles();
 
         //when
-        final Set<Article> articles = articleRestController.getArticles(0, expected, "first", "sur", null, null, null);
+        final ArticleWrapper articleWrapper = articleRestController.getArticles(0, expected, "first", "sur", null, null, null);
 
         //then
-        assertEquals(expected, articles.size());
+        assertEquals(expected, articleWrapper.getArticles().size());
     }
 
     @Test
@@ -121,10 +122,10 @@ public class ArticleRestControllerTest {
         generateArticles();
 
         //when
-        final Set<Article> articles = articleRestController.getArticles(0, expected, null, "sur", dateFormatter.parse("2015-09-10").getTime(), null, null);
+        final ArticleWrapper articleWrapper = articleRestController.getArticles(0, expected, null, "sur", "2015-09-10", null, null);
 
         //then
-        assertEquals(expected, articles.size());
+        assertEquals(expected, articleWrapper.getArticles().size());
     }
 
     @Test
@@ -137,10 +138,10 @@ public class ArticleRestControllerTest {
         generateArticles();
 
         //when
-        final Set<Article> articles = articleRestController.getArticles(0, expected, null, "sur", null, dateFormatter.parse("2015-10-10").getTime(), null);
+        final ArticleWrapper articleWrapper = articleRestController.getArticles(0, expected, null, "sur", null, "2015-10-10", null);
 
         //then
-        assertEquals(expected, articles.size());
+        assertEquals(expected, articleWrapper.getArticles().size());
     }
 
     @Test
@@ -153,10 +154,10 @@ public class ArticleRestControllerTest {
         generateArticles();
 
         //when
-        final Set<Article> articles = articleRestController.getArticles(0, expected, null, "sur", dateFormatter.parse("2015-09-10").getTime(), dateFormatter.parse("2015-10-10").getTime(), null);
+        final ArticleWrapper articleWrapper = articleRestController.getArticles(0, expected, null, "sur", "2015-09-10", "2015-10-10", null);
 
         //then
-        assertEquals(expected, articles.size());
+        assertEquals(expected, articleWrapper.getArticles().size());
     }
 
     @Test
@@ -169,10 +170,10 @@ public class ArticleRestControllerTest {
         generateArticles();
 
         //when
-        final Set<Article> articles = articleRestController.getArticles(0, expected, null, null, null, null, "word");
+        final ArticleWrapper articleWrapper = articleRestController.getArticles(0, expected, null, null, null, null, "word");
 
         //then
-        assertEquals(expected, articles.size());
+        assertEquals(expected, articleWrapper.getArticles().size());
     }
 
     private void generateArticles() throws ParseException {
@@ -184,15 +185,18 @@ public class ArticleRestControllerTest {
                     .withHeader(String.format("header%d", i))
                     .withPublishDate(dateFormatter.parse("2015-10-01").getTime())
                     .withText(String.format("longtext%d", i))
+                    .withArticleId(Long.valueOf(0))
                     .build();
 
             final Author author = AuthorBuilder.anAuthor()
                     .withSurname(String.format("surname%d", i))
                     .withFirstName(String.format("firstName%d", i))
+                    .withAuthorId(Long.valueOf(0))
                     .build();
 
             final Keyword word = KeywordBuilder.aKeyword()
                     .withWord(String.format("word%d", i))
+                    .withKeywordId(Long.valueOf(0))
                     .build();
 
             articleService.addWithJoins(article, Collections.singleton(author), Collections.singleton(word));

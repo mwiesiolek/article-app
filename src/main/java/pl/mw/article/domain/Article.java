@@ -1,5 +1,7 @@
 package pl.mw.article.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.hibernate.annotations.*;
 
 import javax.persistence.*;
@@ -8,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TimeZone;
 
 /**
  * Created by mwiesiolek on 30/09/2015.
@@ -58,8 +61,8 @@ public class Article {
         keywords = new HashSet<>();
     }
 
-    public Article(final String header, final String description, final String text, final Long publishDate) {
-        this.articleId = Long.valueOf(0);
+    public Article(Long id, final String header, final String description, final String text, final Long publishDate) {
+        this.articleId = id;
         this.header = header;
         this.description = description;
         this.text = text;
@@ -101,8 +104,13 @@ public class Article {
         return text;
     }
 
+    @JsonIgnore
     public Long getPublishDate() {
         return publishDate;
+    }
+
+    public String getDate(){
+        return FastDateFormat.getInstance("yyyy-MM-dd HH:mm", TimeZone.getTimeZone("GMT")).format(publishDate);
     }
 
     public void addAuthor(Author author){
@@ -111,6 +119,18 @@ public class Article {
 
     public void addKeyword(Keyword keyword){
         keywords.add(keyword);
+    }
+
+    public void addAuthors(Set<Author> authors){
+        for(Author author : authors){
+            addAuthor(author);
+        }
+    }
+
+    public void addKeywords(Set<Keyword> keywords){
+        for (Keyword keyword : keywords){
+            addKeyword(keyword);
+        }
     }
 
     public Set<Author> getAuthors() {
