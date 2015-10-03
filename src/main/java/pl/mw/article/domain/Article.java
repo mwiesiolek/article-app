@@ -22,28 +22,28 @@ public class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "articleId", unique = true)
-    private final Long articleId;
+    private Long articleId;
 
     @Column(name = "header", nullable = false)
-    private final String header;
+    private String header;
 
     @Column(name = "description", nullable = false)
-    private final String description;
+    private String description;
 
     @Type(type = "text")
     @Column(name = "text", nullable = false)
-    private final String text;
+    private String text;
 
     @Column(name = "publishDate", nullable = false)
-    private final Long publishDate;
+    private Long publishDate;
 
     @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     @JoinTable(name = "article_author", joinColumns = {@JoinColumn(name = "articleId")}, inverseJoinColumns = {@JoinColumn(name="authorId")})
-    private final Set<Author> authors;
+    private Set<Author> authors;
 
     @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     @JoinTable(name = "article_keyword", joinColumns = {@JoinColumn(name = "articleId")}, inverseJoinColumns = {@JoinColumn(name="keywordId")})
-    private final Set<Keyword> keywords;
+    private Set<Keyword> keywords;
 
     /**
      * Use constructor with parameters instead. Hibernate needs default constructor
@@ -70,6 +70,17 @@ public class Article {
 
         authors = new HashSet<>();
         keywords = new HashSet<>();
+    }
+
+    public void copy(Article article){
+        this.articleId = article.articleId;
+        this.header = article.header;
+        this.description = article.description;
+        this.text = article.text;
+        this.publishDate = article.publishDate;
+
+        this.authors = article.authors;
+        this.keywords = article.keywords;
     }
 
     @Override
@@ -139,5 +150,25 @@ public class Article {
 
     public Set<Keyword> getKeywords() {
         return keywords;
+    }
+
+    public void setArticleId(Long articleId) {
+        this.articleId = articleId;
+    }
+
+    public void setHeader(String header) {
+        this.header = header;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public void setPublishDate(Long publishDate) {
+        this.publishDate = publishDate;
     }
 }

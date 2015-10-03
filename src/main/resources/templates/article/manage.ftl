@@ -2,12 +2,13 @@
 <div class="container">
     <div class="panel panel-primary">
         <div class="panel-heading">
-            <h3 class="panel-title" id="article-header">Add article<a class="anchorjs-link" href="#article-header"><span class="anchorjs-icon"></span></a></h3>
+            <h3 class="panel-title" id="article-header">${method} article<a class="anchorjs-link" href="#article-header"><span class="anchorjs-icon"></span></a></h3>
         </div>
         <div class="panel-body">
             <form action="/article/${method}" method="post">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <@spring.formHiddenInput "articleView.articleId", ""/>
+                <@spring.formHiddenInput "articleView.publishDate", ""/>
 
                 <!-- HEADER -->
                 <div class="panel panel-primary">
@@ -83,6 +84,7 @@
 
                 <div class="form-group">
                     <input type="submit" value="Proceed" class="btn btn-primary pull-right" />
+                    <a class="btn btn-default pull-right" style="margin:0 10px 0 0;" href="/">Cancel</a>
                 </div>
 
             </form>

@@ -115,12 +115,7 @@ public class ArticleController {
 
     @RequestMapping(value = "/article/edit", method = RequestMethod.POST)
     public ModelAndView edit(@ModelAttribute ArticleView articleView){
-        Article article = articleView.prepareArticle();
-
-        article.addAuthors(articleView.selectedAuthors());
-        article.addKeywords(articleView.selectedKeywords());
-//todo wczytac z bazy i podmienic z wartosciami z presentation layer
-        articleService.saveOrUpdate(article);
+        articleService.saveOrUpdate(articleView);
 
         ModelAndView modelAndView = list();
         modelAndView.addObject(SUCCESS.getKey(), "Article has been modified.");
